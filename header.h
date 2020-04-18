@@ -1,6 +1,7 @@
 // This libraries just works in Atmel for some reason
 #include <avr/io.h>
 #include <utils/delay>
+#include <avr/pgmspace.h>
 #include <stdio.h>
 #include <stdlib.h>
 

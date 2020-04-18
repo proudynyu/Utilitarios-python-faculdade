@@ -4,8 +4,13 @@
     Author: Igor Becker
     Github: https://github.com/proudynyu
     Date: 17/04/2020
-    Class: Engenharia elétrica - Microprocessadores e Microcontroladores
-    Title: SetIO in Arduino
+    Class: Eletric Engineering - Microprocessor and Microcontroller
+    Title: SetIO in Arduino (Little framework to set IO in Arduino)
+
+    ** PT-BR **
+    Exercicio: No Atmel Studio crie uma função responsável por habilitar os pinos do
+    ATmega328P como entrada ou saída. Quando o pino for uma entrada habilite o pull-up
+    interno do terminal.
 
     *********************************************************************************
 */
@@ -38,6 +43,7 @@ int main(void) {
     }
 }
 
+// Setting IO option
 int ioSelect() {
     int option;
     printf("Select if the PIN will be IN or OUT: ")
@@ -53,8 +59,8 @@ int ioSelect() {
     return option;
 };
 
-// 0 para entrada
-// 1 para saida
+// Setting PIN that receives IN or OUT
+// OUT in HighLevel only
 void portSelect(int IO) {
     int option;
 
