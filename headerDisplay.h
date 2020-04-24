@@ -9,16 +9,14 @@
 // Macros
 #define set_bit(y, bit_x) (y |= (1<<bit_x))
 #define clr_bit(y, bit_x) (y &= ~(1<<bit_x))
-#define clp_bit(y, bit_x) (y ^= (1<<bit_x))
-#define tst_bit(y, bit_x) (y & (1<<bit_x))
 
 // Barramento de dados 8bits
 #define DISPLAY PORTD
 
 // Controll
 #define CONTROL PORTB
-#define RS PB0
-#define E PB1
+#define RS      PB0
+#define E       PB1
 
 // Pulso de Enable
 #define PULSO() _delay_us(1); set_bit(CONTROL, E); _delay_us(1); clr_bit(CONTROL, E); _delay_us(45)
