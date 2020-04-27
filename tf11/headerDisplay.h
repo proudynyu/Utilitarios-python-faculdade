@@ -1,10 +1,13 @@
+#ifndef _headerDisplay_h_
+#define _headerDisplay_h_
+
 // This libraries just works in Atmel for some reason
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include <util/delay.h>
 
 // CPU frequency
 #define F_CPU 16000000
+#include <util/delay.h>
 
 // Macros
 #define set_bit(y, bit_x) (y |= (1<<bit_x))
@@ -29,8 +32,13 @@
 #define CLEAR   0x01
 #define FLINE 	0x80
 
+// Button definition
+#define BUTTON PB2
+
 // LCD.c functions definitions
-void newChar();
-void setLCD(unsigned char LCD, char instruction);
-void initLCD();
-void writeBig(unsigned char cursor, unsigned char num);
+extern void newChar();
+extern void setLCD(unsigned char LCD, char instruction);
+extern void initLCD();
+extern void writeBig(unsigned char cursor, unsigned char num);
+
+#endif
