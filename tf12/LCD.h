@@ -39,5 +39,17 @@ void initLCD() {
 	setLCD(FLINE, 0);   // start of the cursor
 };
 
+void writeLCD(char *c) {
+	for(; *c != 0; c++) setLCD(*c, 1);
+}
+
+char passwordChecker(unsigned char *pass, unsigned char *userDigit) {
+	for (unsigned char i = 0; i < 3; i++) {
+		if (pass[i] != userDigit[i]) {
+			return false;
+		}
+	}
+	return true;
+}
 
 #endif /* LCD_H_ */

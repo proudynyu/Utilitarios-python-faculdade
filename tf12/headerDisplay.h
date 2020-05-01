@@ -39,6 +39,7 @@
 extern void newChar();
 extern void setLCD(unsigned char LCD, char instruction);
 extern void initLCD();
-extern void writeBig(unsigned char cursor, unsigned char num);
+extern void writeLCD(char *c);
+extern char passwordChecker(unsigned char *pass, unsigned char *userDigit);
 
 #endif
