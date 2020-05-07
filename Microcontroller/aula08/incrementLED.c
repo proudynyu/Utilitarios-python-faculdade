@@ -9,20 +9,19 @@
 #define clr_bit(y, bit_x) (y &= ~(1<<bit_x))
 #define tst_bit(y, bit_x) (y & (1<<bit_x))
 
-#define BT1 PB4
-#define BT2 PB5
-
-const unsigned char LEDLIST[] PROGMEM = {
-  PD2, PD3, PD4, PD5,
-  PD7, PB0, PB1, PB2
-}
+#define BT1 PB2
+#define BT2 PB3
 
 int main(void) {
   DDRD = 0xFC;
-  DDRB = 0X07;
+
+  const unsigned char LEDLIST[] = {
+    PD2, PD3, PD4, PD5,
+    PD6, PD7
+  };
 
   int countR = 0;
-  int countL = 7;
+  int countL = 5;
 
   // botao1
   clr_bit(DDRB, BT1);
@@ -38,22 +37,20 @@ int main(void) {
 
       _delay_ms(10);
 
-      if(countR < 5) clp_bit(PORTD, LEDLIST[countR]);
-      else clp_bit(PORTB, LEDLIST[countR]);
+      clp_bit(PORTD, LEDLIST[countR]);
 
       countR += 1;
-      if(countR > 7) countR = 0;
+      if(countR > 5) countR = 0;
     }
     else if (!tst_bit(PINB, BT2)) {
       while(!tst_bit(PINB, BT2));
 
       _delay_ms(10);
 
-      if(countL < 5) clp_bit(PORTD, LEDLIST[countL]);
-      else clp_bit(PORTB, LEDLIST[countL]);
+      clp_bit(PORTD, LEDLIST[countL]);
 
-      countL += 1;
-      if(countL > 7) countL = 0;
+      countL -= 1;
+      if(countL < 0) countL = 5;
     }
   }
 }
