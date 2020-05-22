@@ -1,71 +1,100 @@
-/*  
+/*
     *********************************************************************************
-    
+
     Author: Igor Becker
     Github: https://github.com/proudynyu
-    Date: 30/04/2020
+    Date: 22/05/2020
     Class: Eletric Engineering - Microprocessor and Microcontroller
-    Title: Acess Control 
-
-	** PT-BR **
-    Elabore um programa para o controle de acesso por senha numérica. A senha deve conter 
-	3 dígitos. Quando a senha for correta, uma saída deve ser acionada.
+    Title: Password Checker
 
     *********************************************************************************
 */
 
-#include "teclado.h"
-
-const char msg1[] PROGMEM = "Password:\0";
-const char msg2[] PROGMEM = "=\0";
-const char pass[4] PROGMEM = {"1", "2", "3"};
+const unsigned char msg1[] PROGMEM = "Insert Password\0";
+const unsigned char msg2[] PROGMEM = "Key: \0";
+const unsigned char comp[] PROGMEM = "Comparing...\0";
+const unsigned char pass[] PROGMEM = "Success!\0";
+const unsigned char erro[] PROGMEM = "Not right :/\0";
 
 int main() {
-	unsigned char nr, checkPass[4];
-	unsigned char buttonPres = 0;
-	unsigned char respChecker = false; // bool
-
+  	unsigned char nr[4] = {};
+  	unsigned char position = 0xC8;
+  	unsigned char answer = 1;
+  	unsigned char password[4] = "123";
+  
+	DDRD = 0xFF;   // PORTD e PORTB como saida
+  	PORTD = 0X0F;
+  	
 	DDRB = 0xFF;
-	PORTB = 0x00;
-
-	DDRC = 0x00;
-	PORTC = 0xFF;
-
-	DDRD = 0xFF;
-	PORTD = 0x0F;
-	UCSR0B = 0x00;
-
-
-	initLCD();
-
-	writeLCD(msg1);
-	setLCD(0xC0, 0);
-	writeLCD(msg2);
-
-	do {
-		setLCD(0xC2, 0); // set the initial position for password
-
-		while(buttonPres != 2) {
-			nr = ler_teclado();
-
-			if (nr != 0xFF) {
-				setLCD(nr, 1);
-				checkPass[buttonPres] = nr; // need to fix
-				buttonPres += 1;			
-			}
+  	PORTB = 0x00;
+  
+	DDRC = 0x00;  // define o PORTC vomo entrada
+  	PORTC = 0xFF;
+  
+  	UCSR0B = 0x00;
+	
+	inic_LCD_4bits();   // inicia o LCD
+	escreve_LCD_Flash(msg1);
+  	cmd_LCD(0xC0, 0);
+    escreve_LCD_Flash(msg2);
+  
+	while(1) {
+      	
+      	do {
+        	nr[0] = ler_teclado();
 			
-		}
+          	if (nr[0] != 0xFF){
+              	cmd_LCD(position, 0);
+         		cmd_LCD(nr[0], 1);
+          		break;
+            }
+        } while(1);
+      
+      	_delay_ms(150);
+      
+      	do {
+        	nr[1] = ler_teclado();
+          	
+          	if (nr[1] != 0xFF){
+              	cmd_LCD(position+1, 0);
+         		cmd_LCD(nr[1], 1);
+          		break;
+            }
+        } while(1);
 
-		respChecker = passwordChecker(*pass, *checkPass);
-
-		setLCD(CLEAR, 0);
-		setLCD(FLINE, 0);
-		writeLCD("Wrong answer");
-		setLCD(0xC0, 0);
-		writeLCD("Try again");
-		_delay_us(1000);
-		
-		setLCD(CLEAR, 0);
-
-	} while (respChecker != true);
+      	_delay_ms(150);
+      
+      	do {
+        	nr[2] = ler_teclado();
+          	
+          	if (nr[2] != 0xFF){
+              	cmd_LCD(position+2, 0);
+         		cmd_LCD(nr[2], 1);
+          		break;
+            }
+        } while(1);
+      
+      _delay_ms(1000);
+      
+	  answer = memcmp(password, nr, 3);
+      if (answer == 0) {
+        inic_LCD_4bits();
+      	escreve_LCD_Flash(pass);
+      	_delay_ms(1000);
+        
+        inic_LCD_4bits();   // inicia o LCD
+		escreve_LCD_Flash(msg1);
+  		cmd_LCD(0xC0, 0);
+    	escreve_LCD_Flash(msg2);
+      }
+      else {
+        inic_LCD_4bits();
+        escreve_LCD_Flash(erro);
+        _delay_ms(1000);
+      	inic_LCD_4bits();   // inicia o LCD
+		escreve_LCD_Flash(msg1);
+  		cmd_LCD(0xC0, 0);
+    	escreve_LCD_Flash(msg2);
+      }
+    }			
 }
