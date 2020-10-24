@@ -18,6 +18,8 @@
 // Barramento de dados 8bits
 #define DISPLAY PORTD
 
+#define NIBBLE  1
+
 // Controll
 #define CONTROL PORTB
 #define RS      PB0
@@ -40,6 +42,7 @@ extern void newChar();
 extern void setLCD(unsigned char LCD, char instruction);
 extern void initLCD();
 extern void writeLCD(char *c);
+extern void writeFlash(char *c);
 extern char passwordChecker(unsigned char *pass, unsigned char *userDigit);
 
 #endif
